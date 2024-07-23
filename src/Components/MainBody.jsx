@@ -55,6 +55,7 @@ export const MainBody = () => {
         recipeData.hits.map((hit) => (
           <RecipeCards
             key={hit.recipe.uri}
+            hit={hit}
             label={hit.recipe.label}
             imageUrl={hit.recipe.image}
             recipe={hit.recipe}

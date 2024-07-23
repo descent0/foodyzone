@@ -1,13 +1,10 @@
 import { useContext } from "react";
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
 import { ContextOfRecipeCards, MyContext } from "../Context";
+import { addItem } from "../Store/CartSlice";
+import { useDispatch, useSelector } from "react-redux";
 
-export function RecipeCards({
-    imageUrl,
-   label,
-  
-}) {
-  
+export function RecipeCards({ hit, imageUrl, label }) {
   const {
     searchTerm,
     updateSearchTerm,
@@ -22,17 +19,24 @@ export function RecipeCards({
     error,
   } = useContext(MyContext);
 
-  function onRecipeChange(e){
+  function onRecipeChange(e) {
     setRecipe(label);
     console.log(recipe);
-      }
-  
-    return (
-      <Link to="recipeCard" onClick={onRecipeChange}>
-      <div  className="relative flex flex-row bg-white h-[167px] w-[267px] border-1 border-white rounded-md shadow-2xl overflow-hidden">
-        
+  }
+  const dispatch =useDispatch();
+  const items=useSelector(store=>store.cart.items);
+
+  function handleAddItemInCart(e) {
+    e.preventDefault();
+    dispatch(addItem(hit));
+    console.log(items)
+  }
+
+  return (
+    <Link to="recipeCard" onClick={onRecipeChange}>
+      <div className="relative flex flex-row bg-white h-[167px] w-[267px] border-1 border-white rounded-md shadow-2xl overflow-hidden">
         <div className="absolute inset-0 bg-white bg-opacity-30 backdrop-blur-lg"></div>
-        
+
         <div className="relative flex flex-row h-full w-full">
           <div className="h-full w-[45%] flex items-center justify-center">
             <img
@@ -41,15 +45,20 @@ export function RecipeCards({
               className="bg-cover h-[120px] w-[120px] rounded-full"
             />
           </div>
-  
-          <div className="h-full w-[55%] flex flex-col justify-center items-center p-2 gap-2">
+
+          <div className="h-full w-[55%] flex flex-col justify-center items-center p-2 gap-10 m-2">
             <div className="w-fit h-fit self-center text-black font-bold opacity-100">
               {label}
             </div>
+            <button
+              onClick={handleAddItemInCart}
+              className="bg-green-900 flex rounded-lg justify-center items-center ml-12 px-2 text-white active:bg-white active:text-green-900 active:font-bold active:border-green-900"
+            >
+              Add
+            </button>
           </div>
         </div>
       </div>
-      </Link>
-    );
-  }
-  
+    </Link>
+  );
+}
