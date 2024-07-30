@@ -1,14 +1,27 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import ProfileData from "../assets/Profile.Data";
 import { ProfileContext } from "../Context";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const Login = () => {
+
+ 
     
     const {
         ProfileData,
         isLoggedIn,
-        setIsLoggedIn
+        setIsLoggedIn,
+        loginButtonClicked,setLoginButtonClicked
     }=useContext(ProfileContext);
+
+   const navigate=useNavigate();
+
+    useEffect(() => {
+      if (isLoggedIn) {
+        navigate('/home');
+      }
+    }, [isLoggedIn]);
+    
 
     function LoginLogout(){
 setIsLoggedIn(true);

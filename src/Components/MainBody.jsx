@@ -2,8 +2,10 @@ import { useContext, useState } from "react";
 import { RecipeCards } from "./RecipeCards";
 import { ContextOfRecipeCards, MyContext } from "../Context";
 import { useRecipe } from "../CustomHooks/RecipeFetch";
+import { useSelector } from "react-redux";
 
 export const MainBody = () => {
+  const isOpen=useSelector(store=>store.nav.isOpen);
   const {
     searchTerm,
     updateSearchTerm,
@@ -25,7 +27,7 @@ export const MainBody = () => {
 
   if (isLoading) {
     return (
-      <div className="w-full sm:p-10 h-fit sm:pr-20 flex flex-wrap items-center justify-center sm:justify-start gap-10">
+      <div className={`w-full sm:p-10 h-fit sm:pr-20 flex flex-wrap items-center justify-center sm:justify-start gap-10 `}>
         {Array.from({ length: 20 }, (_, index) => (
           <RecipeCards
             key={index}
@@ -50,7 +52,7 @@ export const MainBody = () => {
   }
 
   return (
-    <div className="w-full sm:p-10 h-fit sm:pr-20  flex flex-wrap items-center justify-center sm:justify-start gap-10">
+    <div className={`w-full sm:p-10 h-fit sm:pr-20  flex flex-wrap items-center justify-center sm:justify-start gap-10 `}>
       {recipeData &&
         recipeData.hits.map((hit) => (
           <RecipeCards

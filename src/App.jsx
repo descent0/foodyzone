@@ -14,7 +14,7 @@ import Profile from "./Components/Profile";
 import ProfileData from "./assets/Profile.Data";
 import Login from "./Components/Login";
 import Cart from "./Components/Cart";
-import { Provider } from "react-redux";
+import { Provider, useSelector } from "react-redux";
 import { store } from "./Store/store";
 
 
@@ -61,10 +61,12 @@ function App() {
 function AppLayot() {
   const online = useOnline();
   const [isLoggedIn,setIsLoggedIn]=useState(false);
+  const [loginButtonClicked,setLoginButtonClicked]=useState(false);
   const profileCont={
     ProfileData,
     isLoggedIn,
-    setIsLoggedIn
+    setIsLoggedIn,
+    loginButtonClicked,setLoginButtonClicked
   }
 
 
@@ -78,7 +80,7 @@ function AppLayot() {
   return (
     <>
     <Provider store={store}>
-      <div className="overflow-x-hidden">
+      <div className={"overflow-x-hidden"}>
         <ProfileContext.Provider value={profileCont}>
         <NavBar />
         <Outlet />
