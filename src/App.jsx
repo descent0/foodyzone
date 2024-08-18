@@ -17,10 +17,10 @@ import Cart from "./Components/Cart";
 import { Provider, useSelector } from "react-redux";
 import { store } from "./Store/store";
 
-
 const About = lazy(() => import("./Components/About"));
 
-function App() {
+// Move context creation here so it can be used by both components
+function useAppContext() {
   const [searchQuery, setSearchQuery] = useState();
   const [selected, setSelected] = useState("All");
   const [ingredients, setIngredients] = useState("all");
@@ -30,7 +30,8 @@ function App() {
       ? `https://api.edamam.com/search?q=${ingredients}&from=0&to=100&mealType=${selected}&app_id=61a846f8&app_key=c5271618bc0724e42b750bf8d90b9076`
       : `https://api.edamam.com/search?q=${ingredients}&from=0&to=100&app_id=61a846f8&app_key=c5271618bc0724e42b750bf8d90b9076`
   );
-  const context = {
+  
+  return {
     searchQuery,
     setSearchQuery,
     selected,
@@ -43,49 +44,50 @@ function App() {
     isLoading,
     error,
   };
+}
+
+function App() {
 
   return (
     <>
-    
-      <MyContext.Provider value={context}>
-        <div className="flex flex-col   items-center overflow-x-hidden ">
+        <div className="flex flex-col items-center overflow-x-hidden">
           <Header />
           <Outlet />
         </div>
-      </MyContext.Provider>
-      
     </>
   );
 }
 
 function AppLayot() {
   const online = useOnline();
-  const [isLoggedIn,setIsLoggedIn]=useState(false);
-  const [loginButtonClicked,setLoginButtonClicked]=useState(false);
-  const profileCont={
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loginButtonClicked, setLoginButtonClicked] = useState(false);
+  
+  const profileCont = {
     ProfileData,
     isLoggedIn,
     setIsLoggedIn,
-    loginButtonClicked,setLoginButtonClicked
-  }
+    loginButtonClicked,
+    setLoginButtonClicked,
+  };
 
+  const context = useAppContext();
 
   if (!online) {
-    return (
-      <>
-        <h1>Oops !! Check Your internet connection</h1>
-      </>
-    );
+    return <h1>Oops !! Check Your internet connection</h1>;
   }
+
   return (
     <>
-    <Provider store={store}>
-      <div className={"overflow-x-hidden"}>
-        <ProfileContext.Provider value={profileCont}>
-        <NavBar />
-        <Outlet />
-        </ProfileContext.Provider>
-      </div>
+      <Provider store={store}>
+        <div className={"overflow-x-hidden"}>
+          <MyContext.Provider value={context}>
+            <ProfileContext.Provider value={profileCont}>
+              <NavBar />
+              <Outlet />
+            </ProfileContext.Provider>
+          </MyContext.Provider>
+        </div>
       </Provider>
     </>
   );
@@ -117,13 +119,7 @@ export const appRouter = createBrowserRouter([
       {
         path: "/about",
         element: (
-          <Suspense
-            fallback={
-              <>
-                <div className="w-full sm:p-10 h-fit sm:pr-20 flex flex-wrap items-center justify-center sm:justify-start gap-10"></div>
-              </>
-            }
-          >
+          <Suspense fallback={<div className="w-full sm:p-10 h-fit sm:pr-20 flex flex-wrap items-center justify-center sm:justify-start gap-10"></div>}>
             <About />
           </Suspense>
         ),
@@ -133,18 +129,17 @@ export const appRouter = createBrowserRouter([
         element: <Service />,
       },
       {
-        path:"profile",
-        element:<Profile/>
-            },
-            {
-              path:"login",
-              element:<Login/>
-            },
-            {
-              path:"cart",
-              element:<Cart/>
-            }
-            
+        path: "profile",
+        element: <Profile />,
+      },
+      {
+        path: "login",
+        element: <Login />,
+      },
+      {
+        path: "cart",
+        element: <Cart />,
+      },
     ],
   },
 ]);

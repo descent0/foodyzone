@@ -42,14 +42,6 @@ export default function RecipeDetailCards() {
             <li> {ingredient}</li>
           ))}
         </ul>
-
-        <p className="mb-4 text-base text-neutral-600 dark:text-neutral-200">
-          This is a wider card with supporting text below as a natural lead-in
-          to additional content. This content is a little bit longer.
-        </p>
-        <p className="text-xs text-neutral-500 dark:text-neutral-300">
-          Last updated 3 mins ago
-        </p>
       </div>
     </div>
   );

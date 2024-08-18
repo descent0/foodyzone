@@ -1,8 +1,9 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { ContextOfRecipeCards, MyContext } from "../Context";
 import { addItem } from "../Store/CartSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { random } from "../utils/random";
 
 export function RecipeCards({ hit, imageUrl, label }) {
   const {
@@ -19,6 +20,8 @@ export function RecipeCards({ hit, imageUrl, label }) {
     error,
   } = useContext(MyContext);
 
+  const [count,setCount]=useState(1);
+
   function onRecipeChange(e) {
     setRecipe(label);
     console.log(recipe);
@@ -28,7 +31,7 @@ export function RecipeCards({ hit, imageUrl, label }) {
 
   function handleAddItemInCart(e) {
     e.preventDefault();
-    dispatch(addItem(hit));
+    dispatch(addItem({hit,count,"price":random([1222,3243,422,345,53,234,233,352,23,235,20,2323,4000])}));
     console.log(items)
   }
 

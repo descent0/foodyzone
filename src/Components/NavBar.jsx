@@ -44,9 +44,6 @@ export default function NavBar() {
           <Link to="/services">
             <a className="text-white hover:text-gray-200">Services</a>
           </Link>
-          <Link to="/home">
-            <a className="text-white hover:text-gray-200">Contact</a>
-          </Link>
 
           {isLoggedIn ? (
             <>
@@ -234,16 +231,7 @@ export default function NavBar() {
               <a className="text-white text-[20px]  hover:text-gray-200">Services</a>
             </Link>
           </div>
-          <div className="  h-[3.5em] flex items-center p-2 bg-[#428969] w-fit min-w-[10em] rounded-lg">
-            {" "}
-            <Link onClick={() => {
-                  setTimeout(() => {
-                    toggleSideBar();
-                  }, 200);
-                }} to="/home">
-              <a className="text-white text-[20px]  hover:text-gray-200">Contact</a>
-            </Link>
-          </div>
+         
         </div>
       ) : null}
     </>
